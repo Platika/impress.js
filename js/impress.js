@@ -704,6 +704,53 @@
         document.addEventListener("keyup", function ( event ) {
             if ( event.keyCode === 9 || ( event.keyCode >= 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
                 switch( event.keyCode ) {
+                    
+                    if ( event.keyCode === 90 ) {
+                        if ( event.shiftKey ) {
+
+
+                            if ( document.getElementById("_overview") ) {
+                                impress().stepTo(document.getElementById("_overview"));
+                            } else {
+                                var steps = document.querySelectorAll("div.step");
+
+                                var minx = 999999,
+                                    maxx = -999999,
+                                    miny = 999999,
+                                    maxy = -999999,
+                                    maxScale = 0;
+
+                                for(var i = 0; i < steps.length; i++) {
+                                    minx = Math.min( steps[i].getAttribute('data-x'), minx );
+                                    maxx = Math.max( steps[i].getAttribute('data-x'), maxx );
+                                    miny = Math.min( steps[i].getAttribute('data-y'), miny );
+                                    maxy = Math.max( steps[i].getAttribute('data-y'), maxy );
+                                    maxScale = Math.max( steps[i].getAttribute('data-scale'), maxScale );
+                                }
+
+                                var centerx = Math.floor(((maxx - minx) / 2) + minx);
+                                var centery = Math.floor(((maxy - miny) / 2) + miny);
+
+                                // create a new div with id _overview
+                                var newDiv = document.createElement('div')
+
+                                 newDiv.setAttribute('id', '_overview');
+                                 newDiv.setAttribute('class', 'step');
+                                 newDiv.setAttribute('data-x', centerx);
+                                 newDiv.setAttribute('data-y', centery );
+                                 newDiv.setAttribute('data-scale', (maxScale) + 4);
+
+                                var impressDiv = document.getElementById('impress');
+                                impressDiv.firstChild.appendChild(newDiv);
+
+                                impress().stepTo(newDiv);
+
+
+
+                            }
+                        }
+
+                    }                 
                     case 33: // pg up
                     case 37: // left
                     case 38: // up
